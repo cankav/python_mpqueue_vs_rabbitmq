@@ -1,4 +1,3 @@
-python_threading_test
+python_mpqueue_vs_rabbitmq
 =====================
 
-test threading memory usage
