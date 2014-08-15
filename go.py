@@ -67,13 +67,17 @@ connection = pika.SelectConnection(parameters=parameters,
 run_num = pow(10, 5)
 
 def test_rabbitmq(run_num, message):
+    admin_conn = pika.BlockingConnection(pika.URLParameters("amqp://guest:guest@localhost:5672/%2F"))
+    admin_channel = admin_conn.channel()
+    admin_channel.queue_declare(queue='hello')
+
     p = Process(target=rabbitmq_consumer, args=())
     p.start()
 
     # blocking performance limits to ~300 messages per second
     #conn = pika.BlockingConnection(pika.URLParameters("amqp://guest:guest@localhost:5672/%2F"))
     #channel = conn.channel()
-    #channel.queue_declare(queue='hello')
+
     #for i in range(run_num):
     #    channel.basic_publish(exchange='', routing_key='hello', body=json.dumps(message))
     #channel.basic_publish(exchange='', routing_key='hello', body='1')
